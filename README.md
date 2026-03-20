@@ -27,3 +27,32 @@ python ./data/synthetic/image_event_generater.py
 
 **"test_ldr" & "test_hdr":** There are 85 (17 testing views * 5 different exposure times) LDR sharp images and 17 HDR sharp images in the two folders, seperately. Note that we only use the LDR sharp images with exposure time *t<sub>1</sub>* and *t<sub>3</sub>* for the novel view novel exposure test. The rest images are for the further research.
 
+## Citation
+
+If you find this useful, please consider citing our paper and starring this repository:
+
+```bibtex
+@inproceedings{qi2023e2nerf,
+  title={E2NeRF: Event enhanced neural radiance fields from blurry images},
+  author={Qi, Yunshan and Zhu, Lin and Zhang, Yu and Li, Jia},
+  booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision},
+  pages={13254--13264},
+  year={2023}
+}
+@article{qi2024e3nerf,
+  title={E3NeRF: Efficient Event-Enhanced Neural Radiance Fields from Blurry Images},
+  author={Qi, Yunshan and Li, Jia and Zhao, Yifan and Zhang, Yu and Zhu, Lin},
+  journal={arXiv preprint arXiv:2408.01840},
+  year={2024}
+}
+@article{qi2026seeing,
+  title={Seeing through Light and Darkness: Sensor-Physics Grounded Deblurring HDR NeRF from Single-Exposure Images and Events},
+  author={Qi, Yunshan and Zhu, Lin and Bao, Nan and Zhao, Yifan and Li, Jia},
+  journal={arXiv preprint arXiv:2601.15475},
+  year={2026}
+}
+```
+
+## Acknowledgment
+
+The overall framework are derived from [E<sup>3</sup>NeRF](https://github.com/iCVTEAM/E3NeRF) and the synthetic data generation is inspired by [HDR-NeRF](https://github.com/xhuangcv/hdr-nerf). We appreciate the effort of the contributors to these repositories.
