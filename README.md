@@ -20,11 +20,12 @@ We provide the original blender files to generate the **Raw Data** for further p
 The **Raw Data** include two folders ("train" and "test") in each scene's folder. There are 18 and 17 folder in the "train" and "test" folders seperately, representing 18 training views and 17 testing views. There are 18 **raw .exr images** in each "train" folder, synthesized during the camera shaking. We also provide the corresponding depth maps for further evaluation. Note that we also provide the ground truth **.json pose data** generated from blender for further evaluation, but we didn't use these data for training and testing in See-NeRF.
 
 ### 4.1.3 Processed Data
-The **Processed Data** include five folders ("train_event", "train_blurry", "train_sharp", "test_ldr", "test_hdr") in each scene's folder. If you want to generate the **Processed Data** from **Raw Data** by yourself, please move the scene folders of **Raw Data** in to the "./data/synthetic/" and use the command below under the environment of [v2e](https://github.com/SensorsINI/v2e).
+The **Processed Data** include five folders ("train_event", "train_blurry", "train_sharp", "test_ldr", "test_hdr") in each scene's folder. If you want to generate the **Processed Data** from **Raw Data** by yourself, please move the scene folders of **Raw Data** in to the "./data/synthetic/" and download the [SuperSloMo39.ckpt](https://drive.google.com/file/d/1jnOmkrbZGV0blrRH230qlQBAtVE_yh5D/view?usp=drive_link) into ./data/synthetic/v2e/input/ folder, then use the command below under the environment of [v2e](https://github.com/SensorsINI/v2e).
 
 ```
 python ./data/synthetic/1-raw2processed.py
 ```
+Note that we modified the v2e code to accept HDR images in **.npy format** as input and to generate color events. （Original v2e only takes LDR images in **.png/.jpg format** and do not cosider the bayer pattern of color event generation）
 
 **"train_event":** There are 18 folders in this folder, representing 18 training views. Each folder contains 18 **raw .npy** image for event simulation and the raw events "v2e-dvs-events.txt" generated from the modified "color_v2e" simulater. Since the event simulation include random noise events, if you try to generate the raw events using our code, it might differ slightly from the raw events we provided.
 
