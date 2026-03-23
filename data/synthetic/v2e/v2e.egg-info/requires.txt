@@ -1,0 +1,11 @@
+numpy
+argcomplete
+engineering-notation
+tqdm
+opencv-python
+h5py
+torch
+torchvision
+numba
+matplotlib
+plyer

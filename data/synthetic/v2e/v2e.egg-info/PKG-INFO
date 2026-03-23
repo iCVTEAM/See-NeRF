@@ -1,0 +1,20 @@
+Metadata-Version: 1.1
+Name: v2e
+Version: 1.4.2
+Summary: Generates synthetic DVS events from conventional video
+Home-page: https://github.com/SensorsINI/v2e
+Author: Tobi Delbruck, Yuhuang Hu, Zhe He
+Author-email: yuhuang.hu@ini.uzh.ch
+License: UNKNOWN
+Description: UNKNOWN
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Topic :: Utilities
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: License :: OSI Approved :: MIT License
