@@ -20,7 +20,7 @@ We provide the original blender files to generate the **Raw Data** for further p
 The **Raw Data** include two folders ("train" and "test") in each scene's folder. There are 18 and 17 folder in the "train" and "test" folders seperately, representing 18 training views and 17 testing views. There are 18 **raw .exr images** in each "train" folder, synthesized during the camera shaking. We also provide the corresponding depth maps for further evaluation. Note that we also provide the ground truth **.json pose data** generated from blender for further evaluation, but we didn't use these data for training and testing in See-NeRF.
 
 ### 4.1.3 Processed Data
-The **Processed Data** include five folders ("train_event", "train_blurry", "train_sharp", "test_ldr", "test_hdr") in each scene's folder. If you want to generate the **Processed Data** from **Raw Data** by yourself, you can move the scene folders of **Raw Data** in to the "./data/synthetic/" and use the command below under the environment of [v2e](https://github.com/SensorsINI/v2e).
+The **Processed Data** include five folders ("train_event", "train_blurry", "train_sharp", "test_ldr", "test_hdr") in each scene's folder. If you want to generate the **Processed Data** from **Raw Data** by yourself, please move the scene folders of **Raw Data** in to the "./data/synthetic/" and use the command below under the environment of [v2e](https://github.com/SensorsINI/v2e).
 
 ```
 python ./data/synthetic/1-raw2processed.py
@@ -34,7 +34,7 @@ python ./data/synthetic/1-raw2processed.py
 
 ### 4.1.4 Train & Test Data
 
-The **Train & Test Data** can be generated from the **Processed Data** using the command below with [COLMAP](https://colmap.github.io/install.html) installed and you can train and test our See-NeRF directly with the **Train & Test Data**.
+The **Train & Test Data** can be generated from the **Processed Data** using the command below with [COLMAP](https://colmap.github.io/install.html) installed and you can also train and test our See-NeRF directly with the provided **Train & Test Data**.
 ```
 python ./data/synthetic/2-processed2train.py
 ```
@@ -65,7 +65,7 @@ The **Raw Data** include the handheld DAVIS 346 captured blurry images and corre
 **"exp_times_train.npy" & "exp_times_test.npy":** The specific values of *t<sub>0</sub>*, *t<sub>1</sub>*, *t<sub>2</sub>*, *t<sub>3</sub>*, *t<sub>4</sub>*.
 
 ### 4.2.2 Train & Test Data
-The **Train & Test Data** can be generated from the **Raw Data**  using the command below with [COLMAP](https://colmap.github.io/install.html) installed. You can train and test our See-NeRF directly with the **Train & Test Data**.
+The **Train & Test Data** can be generated from the **Raw Data**. If you want generate the data by yourself, please put the **Raw Data** scene folders into ./data/real/ file and use the command below with [COLMAP](https://colmap.github.io/install.html) installed in your environment. You can also train and test our See-NeRF directly with the provided **Train & Test Data**.
 ```
 python ./data/real/1-raw2train.py
 ```
