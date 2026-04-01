@@ -38,6 +38,8 @@ def load_events_txt(basedir, views_num, bin_num):
         bin_counter_pre = 0   # The frame counter buffer of current view
         event_t_pre = np.zeros((bin_num, 260, 346), dtype=np.int64)  # offset flag of the first event
         event_t_end = np.zeros((bin_num, 260, 346), dtype=np.int64)  # offset flag of the last flag
+        event_t_pre_polar = np.zeros((bin_num, 260, 346))
+        event_t_end_polar = np.zeros((bin_num, 260, 346))
 
         # Record the first splitting time points
         frames_time.insert(0, exposure_start)
@@ -79,6 +81,17 @@ def load_events_txt(basedir, views_num, bin_num):
             # Record the trigger time of the last event in current pixel and current bin
             event_t_end[bin_counter][y][x] = t - 1
 
+
+            if event_t_pre_polar[bin_counter][y][x] == 0:
+                if p == 1:
+                    event_t_pre_polar[bin_counter][y][x] = 1
+                else:
+                    event_t_pre_polar[bin_counter][y][x] = -1
+            if p == 1:
+                event_t_end_polar[bin_counter][y][x] = 1
+            else:
+                event_t_end_polar[bin_counter][y][x] = -1
+
         # Record the last splitting time points
         frames_time.append(exposure_end)
         print("The splitting time points: ", frames_time)
@@ -88,15 +101,21 @@ def load_events_txt(basedir, views_num, bin_num):
         # Photometric Quantity Calibration
         for i in range(bin_num):
             # Calculate the time difference between the last event and the end time of the bin
-            event_t_end[i][event_t_end[i] != 0] = frames_time[i + 1] - event_t_end[i][event_t_end[i] != 0]
+            event_t_end[i][event_t_end[i] != 0] = frames_time[i + 1] - event_t_end[i][event_t_end[i] != 0] + 1
 
         for i in range(bin_num - 1):
 
             # Case 1: Two consecutive positive or negative events occurs
             offset = np.zeros((260, 346), dtype=np.float64)
             index = (event_t_pre[i + 1] != 0) & (event_t_end[i] != 0)
-            index_pos = (event_t_pre[i + 1] != 0) & (event_t_end[i] != 0) & (event_map[view_num][i + 1] > 0) & (event_map[view_num][i] > 0)
-            index_neg = (event_t_pre[i + 1] != 0) & (event_t_end[i] != 0) & (event_map[view_num][i + 1] < 0) & (event_map[view_num][i] < 0)
+            index_pos_old = (event_t_pre[i + 1] != 0) & (event_t_end[i] != 0) & (event_t_pre_polar[i + 1] > 0) & (event_t_end_polar[i] > 0)
+            index_neg_old = (event_t_pre[i + 1] != 0) & (event_t_end[i] != 0) & (event_t_pre_polar[i + 1] < 0) & (event_t_end_polar[i] < 0)
+            index_pos = (event_t_pre_polar[i + 1] > 0) & (event_t_end_polar[i] > 0)
+            index_neg = (event_t_pre_polar[i + 1] < 0) & (event_t_end_polar[i] < 0)
+
+            if not (np.array_equal(index_pos_old, index_pos) and np.array_equal(index_neg_old, index_neg)):
+                print("Warning !!!", view_num, i)
+                return
 
             # Calculate the Quantity Calibration
             offset[index] = event_t_end[i][index] / (event_t_end[i][index] + event_t_pre[i + 1][index])
@@ -107,18 +126,19 @@ def load_events_txt(basedir, views_num, bin_num):
             event_map[view_num][i + 1][index_pos] = event_map[view_num][i + 1][index_pos] - offset[index_pos]
             event_map[view_num][i + 1][index_neg] = event_map[view_num][i + 1][index_neg] + offset[index_neg]
 
-            # Case 2: No consecutive event with same polarate triggered
-            index_pos_sub = (event_map[view_num][i] > 0) & (np.logical_not(index_pos))
-            index_neg_sub = (event_map[view_num][i] < 0) & (np.logical_not(index_neg))
+            # Case 2: No following event triggered
+            index_pos_sub = (event_t_pre_polar[i + 1] == 0) & (event_t_end_polar[i] > 0)
+            index_neg_sub = (event_t_pre_polar[i + 1] == 0) & (event_t_end_polar[i] < 0)
             # Calibration for the pre-bin (i)
             # Assuming the light intensity variation follows a uniform distribution (0, 1),
             # then setting the offset to 0.5 is the optimal solution.
             event_map[view_num][i][index_pos_sub] = event_map[view_num][i][index_pos_sub] + 0.5
             event_map[view_num][i][index_neg_sub] = event_map[view_num][i][index_neg_sub] - 0.5
+
         # Calibration for the last-bin in Case 2
         i = i + 1
-        index_pos_sub = (event_map[view_num][i] > 0)
-        index_neg_sub = (event_map[view_num][i] < 0)
+        index_pos_sub = (event_t_end_polar[i] > 0)
+        index_neg_sub = (event_t_end_polar[i] < 0)
         event_map[view_num][i][index_pos_sub] = event_map[view_num][i][index_pos_sub] + 0.5
         event_map[view_num][i][index_neg_sub] = event_map[view_num][i][index_neg_sub] - 0.5
 
@@ -233,7 +253,7 @@ for scene in scenes:
 
 
 
-# Generate poses_bounds Folders for training
+# Generate pose_bounds.npy for training and testing
 print("------Stage 4: Colmap Calling and pose_bounds.npy Generation------")
 
 for scene in scenes:
@@ -250,5 +270,3 @@ for scene in scenes:
     # Generate pose_bounds.npy file for training
     gen_poses("./{0}/images_pose_estimation/".format(scene), "exhaustive_matcher")
     shutil.move("./{0}/images_pose_estimation/poses_bounds.npy".format(scene), "./{0}/poses_bounds.npy".format(scene))
-
-
