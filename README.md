@@ -8,7 +8,9 @@ A novel event CRF model is also designed to bridge the gap between physical scen
 The two models are jointly optimized with the NeRF network, leveraging the spatial and temporal dynamic information in events to enhance the sharp HDR 3D representation learning.
 ![](./figures/method.png)
 
-# 2. Installation 
+# 2. Installation
+The code is mainly based on [nerf-pytorch](https://github.com/yenchenlin/nerf-pytorch) and use the same environment.
+Please refer to its github [website](https://github.com/yenchenlin/nerf-pytorch) for the environment installation.
 
 # 3. Code
 The code will be released soon.
