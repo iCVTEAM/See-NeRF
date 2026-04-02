@@ -2,6 +2,11 @@
 This is an official PyTorch implementation of the See-NeRF. Click [here](https://icvteam.github.io/See-NeRF.html) to see the video and supplementary materials in our project website.
 
 # 1. Method Overview
+We employ NeRF to directly represent the actual radiance of the 3D scene in the HDR domain and model raw HDR scene rays hitting the sensor pixels as in the physical world.
+A 2D pixel-wise RGB CRF model is introduced to align the NeRF rendered pixel values with the sensor-recorded LDR pixel values of the input images.
+A novel event CRF model is also designed to bridge the gap between physical scene dynamics and event sensor output.
+The two models are jointly optimized with the NeRF network, leveraging the spatial and temporal dynamic information in events to enhance the sharp HDR 3D representation learning.
+![](./figures/method.png)
 
 # 2. Installation 
 
