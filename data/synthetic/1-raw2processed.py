@@ -41,8 +41,11 @@ for scene in scenes:
             # rgba to rgb, 22 is brightness factor of white bg
             img_hdr = img_hdr[..., :3] * img_hdr[..., -1:] + (1. - img_hdr[..., -1:]) * 22
             img_hdr = cv2.resize(img_hdr, (400, 400))
-            img_hdr_blur = img_hdr_blur + img_hdr
-        img_hdr_blur = img_hdr_blur / 17
+            if j == 0 or j == 16:
+                img_hdr_blur = img_hdr_blur + img_hdr / 2
+            else:
+                img_hdr_blur = img_hdr_blur + img_hdr
+        img_hdr_blur = img_hdr_blur / 16
         # generate LDR blurry training images with exposure time t_0 ~ t_4
         for t in range(5):
             img_ldr_blur = tonemap_exp(img_hdr_blur, 2 ** (2 * (t - 2)))
