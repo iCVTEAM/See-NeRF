@@ -687,6 +687,10 @@ def train():
         color_masks[1::2, 1::2, 2] = 1  # b
         color_masks = torch.tensor(color_masks.reshape((-1, 3))).to(device).float()
 
+    # set suitable cutoff_hz for the WarmRoom scene
+    if args.expname=='WarmRoom':
+        args.cutoff_hz==10
+
     print("--------------creat_nerf--------------")
     # Create log dir and copy the config file
     basedir = args.basedir
