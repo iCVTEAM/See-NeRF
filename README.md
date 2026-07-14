@@ -13,8 +13,14 @@ The code is mainly based on [nerf-pytorch](https://github.com/yenchenlin/nerf-py
 Please refer to its github [website](https://github.com/yenchenlin/nerf-pytorch) for the environment installation.
 
 # 3. Code
-The code will be released soon.
 
+Please download the Train & Test Data of each dataset and put thme in to the ./data/ file. Then you can use the commands below to train our See-NeRF and rendering test view images on each dataset.
+
+```
+python run_nerf_synthetic.py --config config_synthetic.txt
+python run_nerf_real.py --config config_real.txt
+python run_nerf_real_world_challenge.py --config config_real_world_challenge.txt
+```
 
 
 # 4. Data
