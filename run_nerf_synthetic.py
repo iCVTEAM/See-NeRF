@@ -688,7 +688,7 @@ def train():
         color_masks = torch.tensor(color_masks.reshape((-1, 3))).to(device).float()
 
     # set suitable cutoff_hz for the WarmRoom scene
-    if args.expname=='WarmRoom':
+    if args.expname=='WarmRoom' or  args.expname=='DinningRoom':
         args.cutoff_hz==10
 
     print("--------------creat_nerf--------------")
