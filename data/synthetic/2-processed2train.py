@@ -169,7 +169,7 @@ for scene in scenes:
 
     event_map, frames_weights = load_events_txt("./{0}/train_event/".format(scene), 18, bin_num)
     event_map = torch.tensor(event_map).view(-1, bin_num, 400 * 400)
-    torch.save(event_map, "./{0}/events.pt".format(scene))
+    torch.save(event_map, "./{0}/events_offset.pt".format(scene))
     np.savetxt("./{0}/frames_weights.npy".format(scene), frames_weights)
 
 
@@ -179,7 +179,7 @@ print("------Stage 4: Images_Pose_Estimation, Image, GT Folders Generation------
 for scene in scenes:
     print("------Processing {0} Scene------".format(scene))
 
-    events = torch.load("./{0}/events.pt".format(scene)).view(18, bin_num, 400, 400)
+    events = torch.load("./{0}/events_offset.pt".format(scene)).view(18, bin_num, 400, 400)
     os.makedirs("./{0}/images_pose_estimation".format(scene), exist_ok=True)
 
     for i in range(18):
@@ -238,7 +238,7 @@ for scene in scenes:
 
     # Colmap Calling
     # We recommand use the GUI Colmap manually with shared_intrinsics parameter which is not support in the command line
-    current_path = os.getcwd().replace('\\', '/')   # for windows command line
+    current_path = os.getcwd().replace('\\', '/')  # for windows command line
     images_pose_path = "{0}/{1}/images_pose_estimation/".format(current_path, scene)
     command = "colmap automatic_reconstructor --workspace_path {0} --image_path {0} --data_type individual " \
               "--sparse on --dense off --num_threads 8 --gpu_index 0".format(images_pose_path)
